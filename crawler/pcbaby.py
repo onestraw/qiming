@@ -1,9 +1,12 @@
 # coding=utf-8
 
+import os
 import urllib
 import random
 import json
+from bs4 import BeautifulSoup
 
+from crawler import Downloader, Helper
 from base import Base
 
 
@@ -17,17 +20,32 @@ class PCbaby(Base):
         first_name = urllib.quote(name[3:])
         # 0 girl, 1 boy
         gender = 1
-        rt = random.randint(10**4, 10**7)
-        return "http://my.pcbaby.com.cn/intf/forCMS/getIntitleScoreJson.jsp?\
-                sex='{gender}'&xing='{xing}'&callback=testName&name='{ming}'\
-                &time='{randtime}'&req_enc=utf-8".format(
+        rt = random.random()
+        target = "http://my.pcbaby.com.cn/intf/forCMS/getIntitleScoreJson.jsp?\
+                sex={gender}&xing={xing}&callback=testName&name={ming}\
+                &time={randtime}&req_enc=utf-8".format(
                         xing=family_name, ming=first_name, gender=gender, randtime=rt)
+        referer = "http://m.pcbaby.com.cn/tools/nametest/?n={xing}&{ming}&{gender}".format(
+                xing=family_name, ming=first_name, gender=gender)
+        return [target, referer]
 
-    def parse_num(self, text):
-        pass
+    def search(self, word):
+        filename = self.get_filename(word)
+        if self.debug and os.path.exists(filename):
+            data = Helper.fetch_raw_data(filename)
+            soup = BeautifulSoup(data, 'html.parser')
+        else:
+            url, ref = self.get_url(word)
+            hdrs = {
+                'Host': 'm.pcbaby.com.cn',
+                'Referer': ref,
+                'Cookie': 'pcsuv=0; pcuvdata=lastAccessTime=1538465396938; channel=3851',
+            }
+            d = Downloader(url, 3, 3)
+            res = d.get(headers=hdrs)
+            soup = BeautifulSoup(res.text, 'html.parser')
+            Helper.store_raw_data(soup.prettify(), filename)
 
-    def find(self, soup):
-        # response format:
         # testName({"ids":100,"scores":[{"id":13,"content":"xxxx","score":"66"}]})
         try:
             body = soup.string.strip()[9:-1]
@@ -36,7 +54,7 @@ class PCbaby(Base):
         except Exception as e:
             print('raw body: {}, find score err: {}'.format(soup.string, e.message))
 
-        return soup
+        return self
 
     def nums(self):
         return self.score

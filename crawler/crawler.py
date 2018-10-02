@@ -52,11 +52,17 @@ class Downloader(object):
     def setProxies(self, proxies):
         self.proxies = proxies
 
+    def setHeaders(self, headers):
+        self.headers = headers
+
     def request(self):
         res = None
         retries = 0
-        headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0'}
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0'}
+        for k, v in self.headers.items():
+            headers[k] = v
 
+        print headers
         while retries < self.max_retries:
             try:
                 retries += 1
@@ -87,7 +93,8 @@ class Downloader(object):
 
         print('{} -- GET {} {}'.format(datetime.datetime.now().isoformat(), uri, status_code))
 
-    def get(self, extPath=None, params=None):
+    def get(self, extPath=None, params=None, headers={}):
         self.setExtPath(extPath)
         self.setParams(params)
+        self.setHeaders(headers)
         return self.request()
