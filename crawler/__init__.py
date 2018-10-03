@@ -3,3 +3,4 @@
 from .baidu import Baidu
 from .baike import Baike
 from .pcbaby import PCbaby
+from .httpcn import Httpcn

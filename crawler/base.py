@@ -35,11 +35,12 @@ class Base(object):
         return v.strip()
 
     def parse_num(self, text):
-        m = re.search('[\d|,]+', text)
+        m = re.search('[\d|,|.]+', text)
         if not m:
             return
         nums = m.group()
-        self.num = locale.atoi(nums)
+        self.num = locale.atof(nums)
+        return self.num
 
     def search(self, word):
         filename = self.get_filename(word)

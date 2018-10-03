@@ -4,7 +4,7 @@
 import argparse
 
 from prettytable import PrettyTable
-from crawler import Baidu, Baike, PCbaby
+from crawler import Baidu, Baike, PCbaby, Httpcn
 from view import toID, toPY, s2t, t2s
 from tools import lookup, word_topk, word_freq
 
@@ -12,7 +12,7 @@ from tools import lookup, word_topk, word_freq
 def RenderName(names):
     debug = True
     t = PrettyTable()
-    t.field_names = ["序号", "简体", '繁体', '读音', 'ID', '百度', '百科', '打分', '分析', '释义']
+    t.field_names = ["序号", "简体", '繁体', '读音', 'ID', '百度', '百科', '打分', '五格分', '分析', '释义']
     t.align = 'l'
 
     for i, n in enumerate(names):
@@ -22,6 +22,7 @@ def RenderName(names):
                 Baidu(debug=debug).search(n).nums(),
                 Baike(debug=debug).search(n).nums(),
                 PCbaby(debug=debug).search(n).nums(),
+                Httpcn(debug=debug).search(n).nums(),
                 str(freq) + ' ' + comment,
                 lookup(word)[:30].replace('\n', ''),
               ]

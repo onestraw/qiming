@@ -55,18 +55,24 @@ class Downloader(object):
     def setHeaders(self, headers):
         self.headers = headers
 
-    def request(self):
+    def request(self, method='GET', data={}):
         res = None
         retries = 0
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0'}
         for k, v in self.headers.items():
             headers[k] = v
 
-        print headers
         while retries < self.max_retries:
             try:
                 retries += 1
-                res = requests.get(self.uri, proxies=self.proxies, params=self.params, timeout=self.timeout, headers=headers)
+                if method == 'POST':
+                    res = requests.post(self.uri, proxies=self.proxies,
+                            params=self.params, timeout=self.timeout,
+                            headers=headers, data=data)
+                else:
+                    res = requests.get(self.uri, proxies=self.proxies,
+                            params=self.params, timeout=self.timeout,
+                            headers=headers)
                 break
             except Exception as e:
                 time.sleep(3)
@@ -98,3 +104,9 @@ class Downloader(object):
         self.setParams(params)
         self.setHeaders(headers)
         return self.request()
+
+    def post(self, extPath=None, params=None, headers={}, data={}):
+        self.setExtPath(extPath)
+        self.setParams(params)
+        self.setHeaders(headers)
+        return self.request(method='POST', data=data)
