@@ -72,8 +72,12 @@ def lookup(word):
     f.seek(offset)
     record = f.read(limit)
     f.close()
-    data = json.loads(record)
-    return data['explanation']
+    try:
+        data = json.loads(record)
+        return data['explanation']
+    except Exception as e:
+        print(e.message)
+        return record
 
 
 if __name__=='__main__':
