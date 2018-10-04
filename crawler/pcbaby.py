@@ -17,19 +17,20 @@ class PCbaby(Base):
 
     def get_url(self, name):
         uname = unicode(name, 'utf-8')
-        family_name = urllib.quote(uname[0])
-        first_name = urllib.quote(uname[1:])
+        family_name = urllib.quote(uname[0].encode('utf-8'))
+        first_name = urllib.quote(uname[1:].encode('utf-8'))
         gender = 1  # 0 girl, 1 boy
         base_url = 'http://my.pcbaby.com.cn'
-        target = '{host}/intf/forCMS/getIntitleScoreJson.jsp?sex={gender}&\
-                  xing={xing}&callback=testName&name={ming}&time={randtime}&\
-                  req_enc=utf-8'.format(host=base_url, xing=family_name,
-                  ming=first_name, gender=gender, randtime=random.random())
+        target = """{host}/intf/forCMS/getIntitleScoreJson.jsp?sex={gender}&xing={xing}\
+&callback=testName&name={ming}&time={randtime}&req_enc=utf-8""".format(host=base_url,
+            xing=family_name, ming=first_name, gender=gender, randtime=random.random())
         referer = '{host}/tools/nametest/?n={xing}&{ming}&{gender}'.format(
                   host=base_url, xing=family_name, ming=first_name, gender=gender)
         return [target, referer]
 
     def search(self, word):
+        if len(word) < 2:
+            return self
         filename = self.get_filename(word)
         if self.debug and os.path.exists(filename):
             data = Helper.fetch_raw_data(filename)
@@ -51,7 +52,7 @@ class PCbaby(Base):
             d = json.loads(body)
             self.score = int(d['scores'][0]['score'])
         except Exception as e:
-            print('raw body: {}, find score err: {}'.format(soup.string, e.message))
+            print(u'raw body: {}, find score err: {}'.format(soup.string, e.message))
 
         return self
 
