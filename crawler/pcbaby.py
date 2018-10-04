@@ -16,16 +16,17 @@ class PCbaby(Base):
         self.score = 0
 
     def get_url(self, name):
-        family_name = urllib.quote(name[:3])
-        first_name = urllib.quote(name[3:])
+        uname = unicode(word, 'utf-8')
+        family_name = urllib.quote(uname[0])
+        first_name = urllib.quote(uname[1:])
         # 0 girl, 1 boy
         gender = 1
         rt = random.random()
-        target = "http://my.pcbaby.com.cn/intf/forCMS/getIntitleScoreJson.jsp?\
+        target = 'http://my.pcbaby.com.cn/intf/forCMS/getIntitleScoreJson.jsp?\
                 sex={gender}&xing={xing}&callback=testName&name={ming}\
-                &time={randtime}&req_enc=utf-8".format(
+                &time={randtime}&req_enc=utf-8'.format(
                         xing=family_name, ming=first_name, gender=gender, randtime=rt)
-        referer = "http://m.pcbaby.com.cn/tools/nametest/?n={xing}&{ming}&{gender}".format(
+        referer = 'http://m.pcbaby.com.cn/tools/nametest/?n={xing}&{ming}&{gender}'.format(
                 xing=family_name, ming=first_name, gender=gender)
         return [target, referer]
 
@@ -39,7 +40,6 @@ class PCbaby(Base):
             hdrs = {
                 'Host': 'm.pcbaby.com.cn',
                 'Referer': ref,
-                'Cookie': 'pcsuv=0; pcuvdata=lastAccessTime=1538465396938; channel=3851',
             }
             d = Downloader(url, 3, 3)
             res = d.get(headers=hdrs)
