@@ -16,18 +16,17 @@ class PCbaby(Base):
         self.score = 0
 
     def get_url(self, name):
-        uname = unicode(word, 'utf-8')
+        uname = unicode(name, 'utf-8')
         family_name = urllib.quote(uname[0])
         first_name = urllib.quote(uname[1:])
-        # 0 girl, 1 boy
-        gender = 1
-        rt = random.random()
-        target = 'http://my.pcbaby.com.cn/intf/forCMS/getIntitleScoreJson.jsp?\
-                sex={gender}&xing={xing}&callback=testName&name={ming}\
-                &time={randtime}&req_enc=utf-8'.format(
-                        xing=family_name, ming=first_name, gender=gender, randtime=rt)
-        referer = 'http://m.pcbaby.com.cn/tools/nametest/?n={xing}&{ming}&{gender}'.format(
-                xing=family_name, ming=first_name, gender=gender)
+        gender = 1  # 0 girl, 1 boy
+        base_url = 'http://my.pcbaby.com.cn'
+        target = '{host}/intf/forCMS/getIntitleScoreJson.jsp?sex={gender}&\
+                  xing={xing}&callback=testName&name={ming}&time={randtime}&\
+                  req_enc=utf-8'.format(host=base_url, xing=family_name,
+                  ming=first_name, gender=gender, randtime=random.random())
+        referer = '{host}/tools/nametest/?n={xing}&{ming}&{gender}'.format(
+                  host=base_url, xing=family_name, ming=first_name, gender=gender)
         return [target, referer]
 
     def search(self, word):
@@ -60,5 +59,5 @@ class PCbaby(Base):
         return self.score
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     print(PCbaby().search('何中天').nums())

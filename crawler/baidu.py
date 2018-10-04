@@ -14,5 +14,5 @@ class Baidu(Base):
         return soup.find('span', 'nums_text')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     print(Baidu().search('onestraw').nums())

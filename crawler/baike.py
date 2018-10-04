@@ -14,5 +14,5 @@ class Baike(Base):
         return soup.find('div', 'ser-guo')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     print(Baike().search('刘邦').nums())

@@ -1,8 +1,6 @@
 # coding=utf-8
 
 import os
-import re
-import locale
 from bs4 import BeautifulSoup
 
 from crawler import Downloader, Helper
@@ -42,5 +40,5 @@ class Httpcn(Base):
         return self.score
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     print(Httpcn().search('何中天').nums())

@@ -87,13 +87,13 @@ class Downloader(object):
         uri = self.uri
         if isinstance(self.params, dict):
             kv = []
-            for k,v in self.params.iteritems():
+            for k, v in self.params.iteritems():
                 kv.append(k + '=' + v)
             uri = uri + '?' + '&'.join(kv)
 
         if res:
             status_code = res.status_code
-            #print res.headers
+            # print res.headers
         else:
             status_code = -1
 

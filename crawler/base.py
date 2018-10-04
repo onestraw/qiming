@@ -10,13 +10,13 @@ from crawler import Helper
 
 class Base(object):
     def __init__(self, name='default', debug=False):
-        locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
         self.num = 0
         self.engine_name = name
         self.debug = debug
         self.tmpdir = 'tmp'
         if not os.path.exists(self.tmpdir):
-            os.makedirs(dirs)
+            os.makedirs(self.tmpdir)
 
     def get_filename(self, word):
         filename = '{}-{}.html'.format(self.engine_name, word)
