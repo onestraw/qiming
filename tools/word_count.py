@@ -29,10 +29,9 @@ class WordCount(object):
         sorted_hmap = sorted(hmap.items(), key=operator.itemgetter(1),
                              reverse=True)
         try:
-            f = codecs.open(tofile, 'w+', 'utf-8')
-            for k, v in sorted_hmap:
-                f.write(u'{}: {}\n'.format(k, v))
-            f.close()
+            with codecs.open(tofile, 'w+', 'utf-8') as f:
+                for k, v in sorted_hmap:
+                    f.write(u'{}: {}\n'.format(k, v))
         except Exception as e:
             print(e.message)
             for k, v in sorted_hmap:
@@ -43,10 +42,9 @@ class WordCount(object):
         total = 0
         for _, v in hmap.iteritems():
             total += v[0]
-        f = codecs.open(tofile, 'w+', 'utf-8')
         hmap['total'] = total
-        f.write(json.dumps(hmap))
-        f.close()
+        with codecs.open(tofile, 'w+', 'utf-8') as f:
+            f.write(json.dumps(hmap))
 
     def save(self, hmap, toTxt, toJson):
         sorted_hmap = self.output(hmap, toTxt)
@@ -57,9 +55,7 @@ class WordCount(object):
         self.output_json(hmap, toJson)
 
     def count(self):
-        f = open(self.NameCorpusTxt)
-        rows = f.readlines()
-        f.close()
+        rows = open(self.NameCorpusTxt).readlines()
         # 最后一个字的次数
         last = {}
         # 如果名字长度>=3，倒数第二个字的次数，不考虑复姓长度3
@@ -76,9 +72,7 @@ class WordCount(object):
         self.save(middle, self.NameMiddleTxt, self.NameMiddleJson)
 
     def topk(self, sorted_file, k):
-        f = open(sorted_file)
-        rows = f.readlines()
-        f.close()
+        rows = open(sorted_file).readlines()
         return [r.strip() for r in rows[0:k]]
 
     def last_word_topk(self, k):
@@ -88,9 +82,7 @@ class WordCount(object):
         return self.topk(self.NameMiddleTxt, k)
 
     def word_freq(self, json_file, word):
-        f = open(json_file)
-        hmap = json.loads(f.read())
-        f.close()
+        hmap = json.loads(open(json_file).read())
         if word not in hmap:
             return [0] * 3
         v = hmap[word]

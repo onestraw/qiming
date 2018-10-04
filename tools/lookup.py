@@ -18,9 +18,7 @@ class State(object):
 
 
 def create_index(json_file, index_file):
-    f = open(json_file)
-    body = f.read()
-    f.close()
+    body = open(json_file).read()
 
     # key: [offset, limit]
     index = {}
@@ -52,26 +50,22 @@ def create_index(json_file, index_file):
                 word = []
                 state = State.BlockEnd
 
-    f = open(index_file, 'w+')
-    f.write(json.dumps(index))
-    f.close()
+    with open(index_file, 'w+') as f:
+        f.write(json.dumps(index))
 
 
 def lookup(word):
     if not os.path.exists(WordIndexJson):
         create_index(RawWordJson, WordIndexJson)
-    f = open(WordIndexJson)
-    index = json.loads(f.read())
-    f.close()
 
+    index = json.loads(open(WordIndexJson).read())
     if word not in index:
         return ''
 
     offset, limit = index[word]
-    f = open(RawWordJson)
-    f.seek(offset)
-    record = f.read(limit)
-    f.close()
+    with open(RawWordJson) as f:
+        f.seek(offset)
+        record = f.read(limit)
     try:
         data = json.loads(record)
         return data['explanation']
