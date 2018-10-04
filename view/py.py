@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 import pinyin
 
 
@@ -10,6 +10,6 @@ def toPY(text):
     return pinyin.get(text, delimiter=' ')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     text = '中华'
     print(u'ID: {}\nPinyin: {}'.format(toID(text), toPY(text)))
