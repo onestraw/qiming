@@ -80,6 +80,6 @@ def lookup(word):
         return record
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     w = u'天'
     print(lookup(w))

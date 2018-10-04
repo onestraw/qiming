@@ -27,11 +27,11 @@ def word_freq(word, flag):
 
     freq, rank, total = ret
     # 1/4 -- 2/4 -- 3/4 -- 1
-    if rank <= total/4:
+    if rank <= total / 4:
         comment = u'大众名'
-    elif rank <= total/2:
+    elif rank <= total / 2:
         comment = u'普通名'
-    elif rank <= (total*3)/4:
+    elif rank <= (total * 3) / 4:
         comment = u'稀有名'
     else:
         comment = u'罕见名'

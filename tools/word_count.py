@@ -15,9 +15,9 @@ class WordCount(object):
 
     def __init__(self):
         if not os.path.exists(self.NameLastTxt) or\
-            not os.path.exists(self.NameMiddleTxt) or\
-            not os.path.exists(self.NameLastJson) or \
-            not os.path.exists(self.NameMiddleJson):
+           not os.path.exists(self.NameMiddleTxt) or\
+           not os.path.exists(self.NameLastJson) or \
+           not os.path.exists(self.NameMiddleJson):
             self.count()
 
     def inc(self, hmap, key):
@@ -26,13 +26,15 @@ class WordCount(object):
         hmap[key] += 1
 
     def output(self, hmap, tofile):
-        sorted_hmap = sorted(hmap.items(), key=operator.itemgetter(1), reverse=True)
+        sorted_hmap = sorted(hmap.items(), key=operator.itemgetter(1),
+                             reverse=True)
         try:
             f = codecs.open(tofile, 'w+', 'utf-8')
             for k, v in sorted_hmap:
                 f.write(u'{}: {}\n'.format(k, v))
             f.close()
-        except:
+        except Exception as e:
+            print(e.message)
             for k, v in sorted_hmap:
                 print(u'{}: {}'.format(k, v))
         return sorted_hmap
@@ -90,9 +92,9 @@ class WordCount(object):
         hmap = json.loads(f.read())
         f.close()
         if word not in hmap:
-            return [0]*3
+            return [0] * 3
         v = hmap[word]
-        f = round(v[0]/float(hmap['total']), 4)
+        f = round(v[0] / float(hmap['total']), 4)
         # 频率、名次、总数
         return [f, v[1], len(hmap)]
 
@@ -108,17 +110,17 @@ def test():
     k = 16
     print(u'==========中间字-top{}=========='.format(k))
     for i, r in enumerate(wc.middle_word_topk(k)):
-        print('{}. {}'.format(i+1, r))
+        print('{}. {}'.format(i + 1, r))
     print(u'==========末尾字-top{}=========='.format(k))
     for i, r in enumerate(wc.last_word_topk(k)):
-        print('{}. {}'.format(i+1, r))
+        print('{}. {}'.format(i + 1, r))
 
     print(u'==========字的频率==========')
     ws = [u'植', u'华', u'晓', u'启', u'羽', u'伟']
     for word in ws:
         print(u'{}: {}, {}'.format(word, wc.middle_word_freq(word),
-            wc.last_word_freq(word)))
+              wc.last_word_freq(word)))
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     test()
