@@ -1,5 +1,5 @@
 pinyin==0.4.0
 prettytable==0.7.2
 bs4==0.0.1
-requests==2.19.1
+requests==2.20.1
 flake8==3.5.0
