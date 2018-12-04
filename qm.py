@@ -6,7 +6,7 @@ from prettytable import PrettyTable
 
 from crawler import Baidu, Baike, PCbaby, Httpcn
 from view import toID, toPY, s2t, t2s
-from tools import lookup, word_topk, word_freq
+from tools import lookup, word_topk, word_freq, unicode
 
 
 def RenderName(names):

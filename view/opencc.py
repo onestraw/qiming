@@ -1,16 +1,25 @@
 # coding=utf-8
+import sys
 import subprocess
+
+
+def _compat(text):
+    if sys.version_info[0] == 2:
+        return text
+    if isinstance(text, bytes):
+        return text.decode('utf-8')
+    return text.encode('utf-8')
 
 
 def convert(text, config):
     proc = subprocess.Popen(['opencc', '-c', config],
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE)
-    result, err = proc.communicate(text)
+    result, err = proc.communicate(_compat(text))
     if proc.returncode:
         raise RuntimeError('Failed to call opencc with exit code {}'.
                            format(proc.returncode))
-    return result
+    return _compat(result)
 
 
 def s2t(text):

@@ -5,7 +5,7 @@ import re
 import locale
 from bs4 import BeautifulSoup
 
-from crawler import Helper
+from .crawler import Helper
 
 
 class Base(object):

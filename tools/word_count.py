@@ -5,6 +5,8 @@ import json
 import codecs
 import operator
 
+from .compat import unicode
+
 
 class WordCount(object):
     NameCorpusTxt = 'data/chinese_names_corpus.txt'
@@ -40,7 +42,7 @@ class WordCount(object):
 
     def output_json(self, hmap, tofile):
         total = 0
-        for _, v in hmap.iteritems():
+        for _, v in hmap.items():
             total += v[0]
         hmap['total'] = total
         with codecs.open(tofile, 'w+', 'utf-8') as f:

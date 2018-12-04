@@ -3,8 +3,9 @@
 import os
 from bs4 import BeautifulSoup
 
-from crawler import Downloader, Helper
-from base import Base
+from tools import unicode
+from .crawler import Downloader, Helper
+from .base import Base
 
 
 class Httpcn(Base):

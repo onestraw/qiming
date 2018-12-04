@@ -2,6 +2,8 @@
 import pinyin
 import unicodedata
 
+from tools import unicode
+
 
 BJXFile = 'data/bjx.data'
 BJX = {}

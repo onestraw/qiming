@@ -76,7 +76,7 @@ class Downloader(object):
                 break
             except Exception as e:
                 time.sleep(3)
-                print str(e)
+                print(str(e))
 
         self.log(res)
         if res and res.status_code != 200:
