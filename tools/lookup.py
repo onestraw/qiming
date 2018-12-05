@@ -63,15 +63,15 @@ def lookup(word):
         return ''
 
     offset, limit = index[word]
-    with open(RawWordJson) as f:
+    with open(RawWordJson, 'rb') as f:
         f.seek(offset)
         record = f.read(limit)
     try:
-        data = json.loads(record)
+        data = json.loads(record, encoding='utf-8')
         return data['explanation']
     except Exception as e:
-        print(e.message)
-        return record
+        print("lookup err: ", e)
+        return str(record)
 
 
 if __name__ == '__main__':

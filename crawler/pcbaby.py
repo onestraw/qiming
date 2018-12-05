@@ -1,13 +1,15 @@
 # coding=utf-8
 
 import os
+import sys
 import urllib
 import random
 import json
 from bs4 import BeautifulSoup
 
-from crawler import Downloader, Helper
-from base import Base
+from tools import unicode
+from .crawler import Downloader, Helper
+from .base import Base
 
 
 class PCbaby(Base):
@@ -15,10 +17,15 @@ class PCbaby(Base):
         super(PCbaby, self).__init__('pcbaby', debug)
         self.score = 0
 
+    def _quote(self, text):
+        if sys.version_info[0] == 2:
+            return urllib.quote(text.encode('utf-8'))
+        return urllib.parse.quote(text.encode('utf-8'))
+
     def get_url(self, name):
         uname = unicode(name, 'utf-8')
-        family_name = urllib.quote(uname[0].encode('utf-8'))
-        first_name = urllib.quote(uname[1:].encode('utf-8'))
+        family_name = self._quote(uname[0])
+        first_name = self._quote(uname[1:])
         gender = 1  # 0 girl, 1 boy
         base_url = 'http://my.pcbaby.com.cn'
         target = """{host}/intf/forCMS/getIntitleScoreJson.jsp?sex={gender}&xing={xing}\

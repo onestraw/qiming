@@ -1,7 +1,8 @@
 # coding=utf-8
 
-from word_count import WordCount
-from lookup import lookup
+from .word_count import WordCount
+from .lookup import lookup
+from .compat import unicode
 
 
 FLAG_LAST_WORD = 1
