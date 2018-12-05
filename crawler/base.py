@@ -18,6 +18,15 @@ class Base(object):
         if not os.path.exists(self.tmpdir):
             os.makedirs(self.tmpdir)
 
+    def get_sex(self, **kwargs):
+        # 1 male, 0 female
+        sex = 1
+        if 'sex' in kwargs:
+            sex = kwargs['sex']
+        if sex not in set([0, 1]):
+            raise Exception("1 for male, 0 for female")
+        return sex
+
     def get_filename(self, word):
         filename = '{}-{}.html'.format(self.engine_name, word)
         return os.path.join(self.tmpdir, filename)
@@ -42,7 +51,7 @@ class Base(object):
         self.num = locale.atof(nums)
         return self.num
 
-    def search(self, word):
+    def search(self, word, **kwargs):
         filename = self.get_filename(word)
         if self.debug and os.path.exists(filename):
             data = Helper.fetch_raw_data(filename)

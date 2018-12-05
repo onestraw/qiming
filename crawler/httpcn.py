@@ -13,8 +13,9 @@ class Httpcn(Base):
         super(Httpcn, self).__init__('httpcn', debug)
         self.score = 0
 
-    def search(self, word):
-        filename = self.get_filename(word)
+    def search(self, word, **kwargs):
+        sex = self.get_sex(**kwargs)
+        filename = self.get_filename("{}-{}".format(word, sex))
         if self.debug and os.path.exists(filename):
             data = Helper.fetch_raw_data(filename)
             soup = BeautifulSoup(data, 'html.parser')
@@ -25,7 +26,7 @@ class Httpcn(Base):
                 'act': 'submit',
                 'xing': uname[0],
                 'ming': uname[1:],
-                'sex': 1,
+                'sex': sex,
                 'isbz': 0,
             }
             Helper.simple_download(url, filename)

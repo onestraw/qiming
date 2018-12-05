@@ -26,7 +26,7 @@ class PCbaby(Base):
         uname = unicode(name, 'utf-8')
         family_name = self._quote(uname[0])
         first_name = self._quote(uname[1:])
-        gender = 1  # 0 girl, 1 boy
+        gender = self.sex
         base_url = 'http://my.pcbaby.com.cn'
         target = """{host}/intf/forCMS/getIntitleScoreJson.jsp?sex={gender}&xing={xing}\
 &callback=testName&name={ming}&time={randtime}&req_enc=utf-8""".format(host=base_url,
@@ -35,10 +35,11 @@ class PCbaby(Base):
                   host=base_url, xing=family_name, ming=first_name, gender=gender)
         return [target, referer]
 
-    def search(self, word):
+    def search(self, word, **kwargs):
         if len(word) < 2:
             return self
-        filename = self.get_filename(word)
+        self.sex = self.get_sex(**kwargs)
+        filename = self.get_filename("{}-{}".format(word, self.sex))
         if self.debug and os.path.exists(filename):
             data = Helper.fetch_raw_data(filename)
             soup = BeautifulSoup(data, 'html.parser')
