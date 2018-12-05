@@ -26,6 +26,8 @@ def create_index(json_file, index_file):
     offset = -1
     limit = -1
 
+    # 有些字段中含有 {}, 所以用换行数精确判断BlockEnd
+    newlines = 0
     state = State.BlockEnd
     for i, c in enumerate(body):
         if state == State.BlockEnd:
@@ -44,11 +46,14 @@ def create_index(json_file, index_file):
             else:
                 word.append(c)
         elif state == State.WordEnd:
-            if c == '}':
+            if c == '\n':
+                newlines += 1
+            if newlines == 7 and c == '}':
                 limit = i - offset + 1
                 index[''.join(word)] = [offset, limit]
                 word = []
                 state = State.BlockEnd
+                newlines = 0
 
     with open(index_file, 'w+') as f:
         f.write(json.dumps(index))
