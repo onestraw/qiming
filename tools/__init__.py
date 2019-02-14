@@ -4,7 +4,6 @@ from .word_count import WordCount
 from .lookup import lookup
 from .compat import unicode
 
-
 FLAG_LAST_WORD = 1
 FLAG_MIDDLE_WORD = 2
 
@@ -28,9 +27,9 @@ def word_freq(word, flag):
 
     freq, rank, total = ret
     # 1/4 -- 2/4 -- 3/4 -- 1
-    if rank <= total / 4:
+    if rank <= total / 4 and total > 10:
         comment = u'大众名'
-    elif rank <= total / 2:
+    elif rank <= total / 2 and total > 10:
         comment = u'普通名'
     elif rank <= (total * 3) / 4:
         comment = u'稀有名'
